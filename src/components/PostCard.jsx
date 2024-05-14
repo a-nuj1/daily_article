@@ -4,7 +4,8 @@ import {Link} from "react-router-dom"
 
 function PostCard({$id, title , featuredImage}) {
   return (
-    <div>PostCard</div>
+    //checking error in git
+    <Link to={``}/>
   )
 }
 
