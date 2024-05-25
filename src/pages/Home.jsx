@@ -1,23 +1,28 @@
 import React,{useEffect, useState} from 'react'
 import appwriteService from "../appwrite/appconfig"
-
+import { useSelector } from 'react-redux'
 import {Container, PostCard} from "../components"
 
 function Home() {
     const [posts, setPosts] = useState([])
+    const isAuthenticated = useSelector(state => state.auth.status);
     useEffect(()=>{
-        appwriteService.getPosts().then((posts)=>{
-            if(posts){
-                setPosts(posts.documents)
-            }
-        })
-    },[])
-    if (posts.length === 0) {
+        if (!isAuthenticated) {
+            setPosts([]);
+        }else{
+            appwriteService.getPosts().then((posts)=>{
+                if(posts){
+                    setPosts(posts.documents)
+                }
+            })
+        }
+    },[isAuthenticated])
+    if (!isAuthenticated){
         return (
-            <div className="w-full py-8 mt-4 text-center">
+            <div className=" flex justify-center w-full py-8 text-center">
                 <Container>
-                    <div className="flex flex-wrap">
-                        <div className="p-2 w-full">
+                    <div className="flex justify-center p-10">
+                        <div className="w-full p-5 ">
                             <h1 className="text-2xl font-bold hover:text-gray-500">
                                 Login to read posts
                             </h1>
